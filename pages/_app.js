@@ -7,6 +7,8 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import JssProvider from 'react-jss/lib/JssProvider'
 import getPageContext from '../config/getPageContext'
+import withApolloClient from '../lib/withApolloClient'
+import { ApolloProvider } from 'react-apollo'
 
 Router.events.on('routeChangeStart', url => {
   NProgress.start()
@@ -29,7 +31,7 @@ class MyApp extends App {
   }
 
   render () {
-    const { Component, pageProps } = this.props
+    const { Component, pageProps, apolloClient } = this.props
     return (
       <Container>
         <Head>
@@ -50,7 +52,9 @@ class MyApp extends App {
             <CssBaseline />
             {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server-side. */}
-            <Component pageContext={this.pageContext} {...pageProps} />
+            <ApolloProvider client={apolloClient}>
+              <Component pageContext={this.pageContext} {...pageProps} />
+            </ApolloProvider>
           </MuiThemeProvider>
         </JssProvider>
       </Container>
@@ -58,4 +62,4 @@ class MyApp extends App {
   }
 }
 
-export default MyApp
+export default withApolloClient(MyApp)

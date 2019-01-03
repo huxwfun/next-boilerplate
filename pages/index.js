@@ -1,81 +1,46 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogActions from '@material-ui/core/DialogActions'
-import Typography from '@material-ui/core/Typography'
-import { withStyles } from '@material-ui/core/styles'
-import Link from 'next/link'
-
-const styles = theme => ({
-  root: {
-    textAlign: 'center',
-    paddingTop: theme.spacing.unit * 20
-  }
-})
+import Head from 'next/head'
+import checkLoggedIn from '../lib/checkLoggedIn'
+import redirect from '../lib/redirect'
 
 class Index extends React.Component {
-  state = {
-    open: false
-  }
+  static async getInitialProps (context) {
+    const { loggedInUser } = await checkLoggedIn(context.apolloClient)
 
-  handleClose = () => {
-    this.setState({
-      open: false
-    })
-  }
+    if (!loggedInUser.viewer) {
+      // If not signed in, send them somewhere more useful
+      redirect(context, '/signin')
+    }
 
-  handleClick = () => {
-    this.setState({
-      open: true
-    })
+    return { loggedInUser }
   }
-
   render () {
-    const { classes } = this.props
-    const { open } = this.state
-
+    const {
+      loggedInUser: { viewer }
+    } = this.props
     return (
-      <div className={classes.root}>
-        <Dialog open={open} onClose={this.handleClose}>
-          <DialogTitle>Super Secret Password</DialogTitle>
-          <DialogContent>
-            <DialogContentText>1-2-3-4-5</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button color='primary' onClick={this.handleClose}>
-              OK
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Typography variant='h4' gutterBottom>
-          Material-UI
-        </Typography>
-        <Typography variant='subtitle1' gutterBottom>
-          example project
-        </Typography>
-        <Typography gutterBottom>
-          <Link href='/about'>
-            <a>Go to the about page</a>
-          </Link>
-        </Typography>
-        <Button
-          variant='contained'
-          color='secondary'
-          onClick={this.handleClick}
-        >
-          Super Secret Password
-        </Button>
+      <div>
+        <Head>
+          <title>Next boilerplate 🤔</title>
+        </Head>
+        <div>
+          <img src={viewer.avatarUrl} />
+          <span>{viewer.login}</span>
+        </div>
+        <style jsx>{`
+          div {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          img {
+            width: 2em;
+            margin-right: 1em;
+          }
+        `}</style>
       </div>
     )
   }
 }
 
-Index.propTypes = {
-  classes: PropTypes.object.isRequired
-}
-
-export default withStyles(styles)(Index)
+export default Index
