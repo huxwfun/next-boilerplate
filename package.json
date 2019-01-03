@@ -11,18 +11,23 @@
     "lint": "standard"
   },
   "dependencies": {
+    "@material-ui/core": "^3.8.1",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.4",
+    "jss": "^9.8.7",
     "next": "^7.0.2",
     "nprogress": "^0.2.0",
     "react": "^16.7.0",
-    "react-dom": "^16.7.0"
+    "react-dom": "^16.7.0",
+    "react-jss": "^8.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "jest": "^23.6.0",
+    "regenerator-runtime": "^0.13.1",
     "standard": "^12.0.1"
   }
 }
