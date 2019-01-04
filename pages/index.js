@@ -1,6 +1,9 @@
 import Head from 'next/head'
+import Grid from '@material-ui/core/Grid'
 import checkLoggedIn from '../lib/checkLoggedIn'
 import redirect from '../lib/redirect'
+import User from '../modules/user'
+import Appbar from '../modules/appbar'
 
 class Index extends React.Component {
   static async getInitialProps (context) {
@@ -18,27 +21,17 @@ class Index extends React.Component {
       loggedInUser: { viewer }
     } = this.props
     return (
-      <div>
-        <Head>
-          <title>Next boilerplate 🤔</title>
-        </Head>
-        <div>
-          <img src={viewer.avatarUrl} />
-          <span>{viewer.login}</span>
-        </div>
-        <style jsx>{`
-          div {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-          img {
-            width: 2em;
-            margin-right: 1em;
-          }
-        `}</style>
-      </div>
+      <React.Fragment>
+        <Appbar />
+        <Grid container>
+          <Head>
+            <title>Next boilerplate 🤔</title>
+          </Head>
+          <Grid item md={3} xs={12}>
+            <User />
+          </Grid>
+        </Grid>
+      </React.Fragment>
     )
   }
 }
